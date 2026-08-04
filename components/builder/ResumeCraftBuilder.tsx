@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Sparkles, 
   CheckCircle2, 
@@ -28,7 +28,12 @@ import {
   Zap,
   ChevronDown,
   Upload,
-  X
+  X,
+  Link as LinkIcon,
+  Globe,
+  MapPin,
+  Mail,
+  Phone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -139,6 +144,40 @@ export default function ResumeCraftBuilder() {
   const [copiedText, setCopiedText] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
+  // Read URL query params on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const templateParam = params.get("template");
+      const exampleParam = params.get("example");
+
+      if (templateParam && ["modern", "executive", "creative", "ats"].includes(templateParam)) {
+        setSelectedTemplate(templateParam as any);
+        setCurrentStep(2);
+      }
+
+      if (exampleParam) {
+        if (exampleParam.includes("software") || exampleParam.includes("engineer")) {
+          setPersonalInfo(prev => ({ ...prev, fullName: "Alex Mercer", jobTitle: "Senior Software Engineer" }));
+          setExperiences([
+            {
+              id: "exp-ex-1",
+              company: "TechCorp Systems",
+              position: "Senior Full Stack Engineer",
+              startDate: "2020",
+              endDate: "Present",
+              bullets: [
+                "Spearheaded microservices architecture migration using Next.js & Node.js, reducing latency by 45%.",
+                "Mentored team of 6 engineers and established CI/CD pipeline pipelines with 99.9% uptime."
+              ]
+            }
+          ]);
+          setCurrentStep(2);
+        }
+      }
+    }
+  }, []);
+
   // Popular Quick Skills Suggestions
   const popularSkillSuggestions = ["Management Skills", "Analytical Thinking", "Leadership", "Lesson Planning", "Curriculum Design", "STEM Education"];
 
@@ -154,6 +193,31 @@ export default function ResumeCraftBuilder() {
   // Remove Skill Handler
   const handleRemoveSkill = (skillToRemove: string) => {
     setSkills(skills.filter((s) => s !== skillToRemove));
+  };
+
+  // Add Work Experience Handler
+  const handleAddExperience = () => {
+    const newExp: ExperienceItem = {
+      id: Date.now().toString(),
+      company: "",
+      position: "",
+      startDate: "",
+      endDate: "Present",
+      bullets: ["Achievement bullet point..."],
+    };
+    setExperiences([...experiences, newExp]);
+  };
+
+  // Add Education Handler
+  const handleAddEducation = () => {
+    const newEdu: EducationItem = {
+      id: Date.now().toString(),
+      institution: "",
+      degree: "",
+      startDate: "",
+      endDate: "",
+    };
+    setEducation([...education, newEdu]);
   };
 
   // Trigger AI Bullet Generation Modal
@@ -216,6 +280,60 @@ export default function ResumeCraftBuilder() {
     setCopiedText(true);
     setTimeout(() => setCopiedText(false), 2500);
   };
+
+  // Pre-fill demo data for upload modal
+  const handlePreFillDemoData = () => {
+    setPersonalInfo({
+      fullName: "Marcus Vance",
+      jobTitle: "Principal Product Designer",
+      email: "marcus.vance@design.io",
+      phone: "(415) 892-0193",
+      location: "San Francisco, CA",
+      linkedin: "linkedin.com/in/marcusvance",
+      github: "github.com/marcusvance",
+      website: "marcusvance.design"
+    });
+    setSummary("Lead Product Designer with 10+ years scaling SaaS design systems and consumer web platforms. Recognized for bridging user research with high-converting visual UI.");
+    setUploadModalOpen(false);
+  };
+
+  // Template List for Step 1 Filtering
+  const allTemplatesList = [
+    {
+      id: "modern",
+      name: "Modern Minimalist",
+      category: "Modern",
+      tag: "Popular",
+      score: "98/100 ATS Score",
+      description: "Clean single-column header layout with subtle accent borders."
+    },
+    {
+      id: "executive",
+      name: "Executive Serif",
+      category: "Executive",
+      tag: "Serif",
+      score: "96/100 ATS Score",
+      description: "Traditional corporate header banner with formal serif typography."
+    },
+    {
+      id: "creative",
+      name: "Creative Accent",
+      category: "Creative",
+      tag: "Vibrant",
+      score: "95/100 ATS Score",
+      description: "2-column split layout with left sidebar for skills and contact info."
+    },
+    {
+      id: "ats",
+      name: "Minimal Single-Column",
+      category: "Minimal ATS",
+      tag: "100% ATS",
+      score: "100/100 Gold Standard",
+      description: "Ultra-clean plain text format optimized for raw ATS parsers."
+    }
+  ];
+
+  const filteredTemplates = allTemplatesList.filter(t => templateFilter === "All" || t.category === templateFilter);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans pb-20">
@@ -331,149 +449,44 @@ export default function ResumeCraftBuilder() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            {/* Template Card 1 */}
-            <div
-              onClick={() => {
-                setSelectedTemplate("modern");
-                setCurrentStep(2);
-              }}
-              className={`group relative rounded-2xl border bg-white p-4 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm hover:shadow-xl ${
-                selectedTemplate === "modern"
-                  ? "border-blue-600 ring-2 ring-blue-500/20 shadow-xl"
-                  : "border-slate-200"
-              }`}
-            >
-              <div className="aspect-[3/4] rounded-xl bg-slate-50 border border-slate-200 p-4 text-slate-900 font-sans text-[8px] leading-tight relative overflow-hidden">
-                <div className="border-b-2 border-blue-600 pb-2 mb-2">
-                  <div className="font-bold text-[10px] text-blue-950">ALICE HART</div>
-                  <div className="text-blue-600 font-semibold text-[7px]">Senior Mathematics Specialist</div>
-                </div>
-                <div className="space-y-1.5 text-slate-700">
-                  <div className="font-bold border-b border-slate-200 text-slate-900">SUMMARY</div>
-                  <div>Enthusiastic math specialist with over 8 years experience...</div>
-                  <div className="font-bold border-b border-slate-200 text-slate-900 pt-1">EXPERIENCE</div>
-                  <div className="font-bold text-slate-900">Tuscaloosa High School</div>
-                  <div>• Boosted AP calculus pass rate by 28%</div>
-                </div>
-                <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center space-y-3 text-white">
-                  <Badge variant="success" className="bg-emerald-500 text-white">98/100 ATS Score</Badge>
-                  <button className="w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white shadow">
-                    Use Modern Template
-                  </button>
-                </div>
-              </div>
-              <div className="mt-3 flex items-center justify-between">
-                <span className="font-bold text-sm text-slate-900">Modern Minimalist</span>
-                <span className="text-[10px] font-semibold bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">Popular</span>
-              </div>
-            </div>
-
-            {/* Template Card 2 */}
-            <div
-              onClick={() => {
-                setSelectedTemplate("executive");
-                setCurrentStep(2);
-              }}
-              className={`group relative rounded-2xl border bg-white p-4 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm hover:shadow-xl ${
-                selectedTemplate === "executive"
-                  ? "border-blue-600 ring-2 ring-blue-500/20 shadow-xl"
-                  : "border-slate-200"
-              }`}
-            >
-              <div className="aspect-[3/4] rounded-xl bg-slate-900 text-white p-4 font-serif text-[8px] leading-tight relative overflow-hidden">
-                <div className="border-b border-slate-700 pb-2 mb-2">
-                  <div className="font-bold text-[10px]">ALICE HART</div>
-                  <div className="text-slate-300 font-semibold text-[7px]">Department Lead</div>
-                </div>
-                <div className="space-y-1.5 text-slate-200">
-                  <div className="font-bold border-b border-slate-700">EXPERIENCE</div>
-                  <div>Tuscaloosa High School (2017-Present)</div>
-                  <div>• Led STEM curriculum strategy</div>
-                </div>
-                <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center space-y-3 text-white">
-                  <Badge variant="success" className="bg-emerald-500 text-white">96/100 ATS Score</Badge>
-                  <button className="w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white shadow">
-                    Use Executive Layout
-                  </button>
-                </div>
-              </div>
-              <div className="mt-3 flex items-center justify-between">
-                <span className="font-bold text-sm text-slate-900">Executive Serif</span>
-                <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full">Serif</span>
-              </div>
-            </div>
-
-            {/* Template Card 3 */}
-            <div
-              onClick={() => {
-                setSelectedTemplate("creative");
-                setCurrentStep(2);
-              }}
-              className={`group relative rounded-2xl border bg-white p-4 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm hover:shadow-xl ${
-                selectedTemplate === "creative"
-                  ? "border-blue-600 ring-2 ring-blue-500/20 shadow-xl"
-                  : "border-slate-200"
-              }`}
-            >
-              <div className="aspect-[3/4] rounded-xl bg-slate-50 border border-slate-200 p-3 font-sans text-[7.5px] leading-tight relative overflow-hidden flex gap-2">
-                <div className="w-1/3 bg-blue-900 text-white p-2 rounded space-y-2">
-                  <div className="font-bold text-[8px]">ALICE H.</div>
-                  <div className="text-[6px]">SKILLS</div>
-                  <div className="text-[5.5px] space-y-0.5 text-blue-100">
-                    <div>• Math Leadership</div>
-                    <div>• Algebra</div>
+            {filteredTemplates.map((t) => (
+              <div
+                key={t.id}
+                onClick={() => {
+                  setSelectedTemplate(t.id as any);
+                  setCurrentStep(2);
+                }}
+                className={`group relative rounded-2xl border bg-white p-4 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm hover:shadow-xl ${
+                  selectedTemplate === t.id
+                    ? "border-blue-600 ring-2 ring-blue-500/20 shadow-xl"
+                    : "border-slate-200"
+                }`}
+              >
+                <div className="aspect-[3/4] rounded-xl bg-slate-50 border border-slate-200 p-4 text-slate-900 font-sans text-[8px] leading-tight relative overflow-hidden">
+                  <div className="border-b-2 border-blue-600 pb-2 mb-2">
+                    <div className="font-bold text-[10px] text-slate-950 uppercase">{personalInfo.fullName}</div>
+                    <div className="text-blue-600 font-semibold text-[7px]">{personalInfo.jobTitle}</div>
+                  </div>
+                  <div className="space-y-1.5 text-slate-700">
+                    <div className="font-bold border-b border-slate-200 text-slate-900">SUMMARY</div>
+                    <div>{summary.substring(0, 70)}...</div>
+                    <div className="font-bold border-b border-slate-200 text-slate-900 pt-1">EXPERIENCE</div>
+                    <div className="font-bold text-slate-900">Senior Instructor</div>
+                    <div>• Boosted student outcomes by 28%</div>
+                  </div>
+                  <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center space-y-3 text-white">
+                    <Badge variant="success" className="bg-emerald-500 text-white">{t.score}</Badge>
+                    <button className="w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white shadow">
+                      Use {t.name}
+                    </button>
                   </div>
                 </div>
-                <div className="w-2/3 space-y-1.5 text-slate-800">
-                  <div className="font-bold text-[8px] text-blue-900">EXPERIENCE</div>
-                  <div className="font-bold">Tuscaloosa High</div>
-                </div>
-                <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center space-y-3 text-white">
-                  <Badge variant="success" className="bg-emerald-500 text-white">95/100 ATS Score</Badge>
-                  <button className="w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white shadow">
-                    Use Creative Accent
-                  </button>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="font-bold text-sm text-slate-900">{t.name}</span>
+                  <span className="text-[10px] font-semibold bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">{t.tag}</span>
                 </div>
               </div>
-              <div className="mt-3 flex items-center justify-between">
-                <span className="font-bold text-sm text-slate-900">Creative Accent</span>
-                <span className="text-[10px] font-semibold bg-purple-50 text-purple-600 px-2 py-0.5 rounded-full">Vibrant</span>
-              </div>
-            </div>
-
-            {/* Template Card 4 */}
-            <div
-              onClick={() => {
-                setSelectedTemplate("ats");
-                setCurrentStep(2);
-              }}
-              className={`group relative rounded-2xl border bg-white p-4 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm hover:shadow-xl ${
-                selectedTemplate === "ats"
-                  ? "border-blue-600 ring-2 ring-blue-500/20 shadow-xl"
-                  : "border-slate-200"
-              }`}
-            >
-              <div className="aspect-[3/4] rounded-xl bg-white border border-slate-200 p-4 font-mono text-[7.5px] leading-tight relative overflow-hidden space-y-2">
-                <div className="text-center border-b border-slate-300 pb-1 font-bold">
-                  ALICE HART | a.hart@gmail.com
-                </div>
-                <div className="font-bold text-slate-800">EXPERIENCE</div>
-                <div>Tuscaloosa County High (2017-Present)</div>
-                <div>• AP calculus instruction</div>
-                <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center space-y-3 text-white">
-                  <Badge variant="success" className="bg-emerald-500 text-white">100/100 ATS Gold Standard</Badge>
-                  <button className="w-full rounded-xl bg-blue-600 py-2 text-xs font-bold text-white shadow">
-                    Use Minimal ATS Standard
-                  </button>
-                </div>
-              </div>
-              <div className="mt-3 flex items-center justify-between">
-                <span className="font-bold text-sm text-slate-900">Minimal Single-Column</span>
-                <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">100% ATS</span>
-              </div>
-            </div>
-
+            ))}
           </div>
         </div>
       )}
@@ -488,13 +501,13 @@ export default function ResumeCraftBuilder() {
               
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-blue-600" /> Resume Content & Style Editor
+                  <FileText className="h-5 w-5 text-blue-600" /> Content & Style Editor
                 </h3>
                 <button
                   onClick={() => setUploadModalOpen(true)}
                   className="text-xs font-bold text-blue-600 border border-blue-200 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100"
                 >
-                  <Upload className="h-3.5 w-3.5 inline mr-1" /> Import Resume Draft
+                  <Upload className="h-3.5 w-3.5 inline mr-1" /> Import Draft
                 </button>
               </div>
 
@@ -556,6 +569,48 @@ export default function ResumeCraftBuilder() {
                           />
                         </div>
                       </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 mb-1 block">Location</label>
+                          <input
+                            type="text"
+                            value={personalInfo.location}
+                            onChange={(e) => setPersonalInfo({ ...personalInfo, location: e.target.value })}
+                            className="w-full rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 mb-1 block">LinkedIn</label>
+                          <input
+                            type="text"
+                            value={personalInfo.linkedin}
+                            onChange={(e) => setPersonalInfo({ ...personalInfo, linkedin: e.target.value })}
+                            className="w-full rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 mb-1 block">GitHub</label>
+                          <input
+                            type="text"
+                            value={personalInfo.github}
+                            onChange={(e) => setPersonalInfo({ ...personalInfo, github: e.target.value })}
+                            className="w-full rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[11px] font-semibold text-slate-600 mb-1 block">Website</label>
+                          <input
+                            type="text"
+                            value={personalInfo.website}
+                            onChange={(e) => setPersonalInfo({ ...personalInfo, website: e.target.value })}
+                            className="w-full rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                          />
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -580,7 +635,7 @@ export default function ResumeCraftBuilder() {
                           onClick={() => openAiModal("summary")}
                           className="text-[11px] font-bold text-blue-600 flex items-center gap-1 hover:underline"
                         >
-                          <Wand2 className="h-3 w-3" /> ✨ AI Summary Assistant
+                          <Wand2 className="h-3 w-3" /> ✨ AI Assistant
                         </button>
                       </div>
                       <textarea
@@ -593,14 +648,14 @@ export default function ResumeCraftBuilder() {
                   )}
                 </div>
 
-                {/* Work Experience */}
+                {/* Work Experience Accordion */}
                 <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
                   <button
                     onClick={() => setActiveAccordion(activeAccordion === "exp" ? "" : "exp")}
                     className="w-full p-4 flex items-center justify-between font-bold text-sm text-slate-900 bg-slate-50 hover:bg-slate-100/80 transition-colors"
                   >
                     <span className="flex items-center gap-2">
-                      <Briefcase className="h-4 w-4 text-emerald-600" /> Work Experience
+                      <Briefcase className="h-4 w-4 text-emerald-600" /> Work Experience ({experiences.length})
                     </span>
                     <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${activeAccordion === "exp" ? "rotate-180" : ""}`} />
                   </button>
@@ -608,8 +663,16 @@ export default function ResumeCraftBuilder() {
                   {activeAccordion === "exp" && (
                     <div className="p-4 space-y-4 text-xs border-t border-slate-200">
                       {experiences.map((exp) => (
-                        <div key={exp.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-                          <div className="grid grid-cols-2 gap-2">
+                        <div key={exp.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-3 relative">
+                          <button
+                            onClick={() => setExperiences(experiences.filter(item => item.id !== exp.id))}
+                            className="absolute top-3 right-3 text-red-500 hover:text-red-700"
+                            title="Delete Experience"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+
+                          <div className="grid grid-cols-2 gap-2 pr-6">
                             <input
                               type="text"
                               value={exp.company}
@@ -618,7 +681,7 @@ export default function ResumeCraftBuilder() {
                                 setExperiences((prev) => prev.map((item) => item.id === exp.id ? { ...item, company: val } : item));
                               }}
                               className="rounded bg-white border border-slate-200 px-2.5 py-1.5 text-xs text-slate-900 font-semibold"
-                              placeholder="Company"
+                              placeholder="Company Name"
                             />
                             <input
                               type="text"
@@ -628,18 +691,41 @@ export default function ResumeCraftBuilder() {
                                 setExperiences((prev) => prev.map((item) => item.id === exp.id ? { ...item, position: val } : item));
                               }}
                               className="rounded bg-white border border-slate-200 px-2.5 py-1.5 text-xs text-slate-900"
-                              placeholder="Position"
+                              placeholder="Position / Title"
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <input
+                              type="text"
+                              value={exp.startDate}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setExperiences((prev) => prev.map((item) => item.id === exp.id ? { ...item, startDate: val } : item));
+                              }}
+                              className="rounded bg-white border border-slate-200 px-2.5 py-1.5 text-xs text-slate-900"
+                              placeholder="Start Date (e.g. 2017)"
+                            />
+                            <input
+                              type="text"
+                              value={exp.endDate}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setExperiences((prev) => prev.map((item) => item.id === exp.id ? { ...item, endDate: val } : item));
+                              }}
+                              className="rounded bg-white border border-slate-200 px-2.5 py-1.5 text-xs text-slate-900"
+                              placeholder="End Date (e.g. Present)"
                             />
                           </div>
 
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                              <span className="text-[11px] font-semibold text-slate-600">Accomplishment Bullets</span>
+                              <span className="text-[11px] font-semibold text-slate-600">Bullets</span>
                               <button
                                 onClick={() => openAiModal("bullet", exp.id)}
                                 className="text-[11px] font-bold text-blue-600 flex items-center gap-1 hover:underline"
                               >
-                                <Wand2 className="h-3 w-3" /> ✨ Generate AI Bullets
+                                <Wand2 className="h-3 w-3" /> ✨ AI Bullets
                               </button>
                             </div>
                             {exp.bullets.map((b, bi) => (
@@ -673,6 +759,93 @@ export default function ResumeCraftBuilder() {
                           </div>
                         </div>
                       ))}
+
+                      <button
+                        onClick={handleAddExperience}
+                        className="w-full py-2.5 rounded-xl border border-dashed border-slate-300 text-blue-600 font-bold hover:bg-blue-50 transition-colors flex items-center justify-center gap-1.5 text-xs"
+                      >
+                        <Plus className="h-4 w-4" /> Add Work Experience
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Education Accordion */}
+                <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+                  <button
+                    onClick={() => setActiveAccordion(activeAccordion === "edu" ? "" : "edu")}
+                    className="w-full p-4 flex items-center justify-between font-bold text-sm text-slate-900 bg-slate-50 hover:bg-slate-100/80 transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <GraduationCap className="h-4 w-4 text-indigo-600" /> Education ({education.length})
+                    </span>
+                    <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${activeAccordion === "edu" ? "rotate-180" : ""}`} />
+                  </button>
+
+                  {activeAccordion === "edu" && (
+                    <div className="p-4 space-y-4 text-xs border-t border-slate-200">
+                      {education.map((edu) => (
+                        <div key={edu.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 relative">
+                          <button
+                            onClick={() => setEducation(education.filter(item => item.id !== edu.id))}
+                            className="absolute top-3 right-3 text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+
+                          <div className="pr-6 space-y-2">
+                            <input
+                              type="text"
+                              value={edu.institution}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setEducation(prev => prev.map(item => item.id === edu.id ? { ...item, institution: val } : item));
+                              }}
+                              placeholder="School / Institution"
+                              className="w-full rounded bg-white border border-slate-200 px-2.5 py-1.5 text-xs text-slate-900 font-semibold"
+                            />
+                            <input
+                              type="text"
+                              value={edu.degree}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setEducation(prev => prev.map(item => item.id === edu.id ? { ...item, degree: val } : item));
+                              }}
+                              placeholder="Degree / Field of Study"
+                              className="w-full rounded bg-white border border-slate-200 px-2.5 py-1.5 text-xs text-slate-900"
+                            />
+                            <div className="grid grid-cols-2 gap-2">
+                              <input
+                                type="text"
+                                value={edu.startDate}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setEducation(prev => prev.map(item => item.id === edu.id ? { ...item, startDate: val } : item));
+                                }}
+                                placeholder="Start Year"
+                                className="rounded bg-white border border-slate-200 px-2.5 py-1.5 text-xs text-slate-900"
+                              />
+                              <input
+                                type="text"
+                                value={edu.endDate}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setEducation(prev => prev.map(item => item.id === edu.id ? { ...item, endDate: val } : item));
+                                }}
+                                placeholder="End Year"
+                                className="rounded bg-white border border-slate-200 px-2.5 py-1.5 text-xs text-slate-900"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      <button
+                        onClick={handleAddEducation}
+                        className="w-full py-2.5 rounded-xl border border-dashed border-slate-300 text-indigo-600 font-bold hover:bg-indigo-50 transition-colors flex items-center justify-center gap-1.5 text-xs"
+                      >
+                        <Plus className="h-4 w-4" /> Add Education
+                      </button>
                     </div>
                   )}
                 </div>
@@ -747,9 +920,10 @@ export default function ResumeCraftBuilder() {
                 {/* Style Controls */}
                 <div className="rounded-xl border border-slate-200 bg-white p-4 space-y-4 shadow-sm">
                   <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                    <Palette className="h-4 w-4 text-blue-600" /> Color & Typography Controls
+                    <Palette className="h-4 w-4 text-blue-600" /> Color, Font & Layout Controls
                   </h4>
 
+                  {/* Accent Color */}
                   <div>
                     <label className="text-[11px] font-semibold text-slate-600 block mb-1.5">Accent Color</label>
                     <div className="flex items-center gap-3">
@@ -764,6 +938,45 @@ export default function ResumeCraftBuilder() {
                         />
                       ))}
                     </div>
+                  </div>
+
+                  {/* Font Family */}
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-600 block mb-1.5">Font Family</label>
+                    <div className="flex gap-2">
+                      {[
+                        { id: "sans", label: "Sans-Serif" },
+                        { id: "serif", label: "Serif" },
+                        { id: "mono", label: "Monospace" }
+                      ].map((f) => (
+                        <button
+                          key={f.id}
+                          onClick={() => setFontFamily(f.id as any)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${
+                            fontFamily === f.id ? "bg-slate-900 text-white border-slate-900" : "bg-slate-50 text-slate-700 border-slate-200"
+                          }`}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Line Spacing Slider */}
+                  <div>
+                    <div className="flex justify-between text-[11px] font-semibold text-slate-600 mb-1">
+                      <span>Line Spacing</span>
+                      <span>{lineSpacing}x</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1.1"
+                      max="2.0"
+                      step="0.1"
+                      value={lineSpacing}
+                      onChange={(e) => setLineSpacing(parseFloat(e.target.value))}
+                      className="w-full accent-blue-600 cursor-pointer"
+                    />
                   </div>
                 </div>
 
@@ -785,101 +998,309 @@ export default function ResumeCraftBuilder() {
               <div className="sticky top-36 z-30 rounded-xl border border-slate-200 bg-white p-3 shadow-sm flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <div className="h-8 w-8 rounded-full bg-emerald-500 text-white font-extrabold flex items-center justify-center text-xs">
-                    94
+                    98
                   </div>
                   <div>
-                    <div className="font-bold text-slate-900">High ATS Match</div>
+                    <div className="font-bold text-slate-900">{selectedTemplate.toUpperCase()} Template</div>
                     <div className="text-[10px] text-slate-500">Greenhouse Verified</div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button onClick={() => setZoomLevel(Math.max(70, zoomLevel - 10))} className="p-1 rounded bg-slate-100 hover:bg-slate-200">
-                    <ZoomOut className="h-3.5 w-3.5" />
-                  </button>
-                  <span className="font-mono text-slate-600">{zoomLevel}%</span>
-                  <button onClick={() => setZoomLevel(Math.min(130, zoomLevel + 10))} className="p-1 rounded bg-slate-100 hover:bg-slate-200">
-                    <ZoomIn className="h-3.5 w-3.5" />
-                  </button>
+                <div className="flex items-center gap-3">
+                  {/* Device toggle */}
+                  <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+                    <button
+                      onClick={() => setPreviewDevice("desktop")}
+                      className={`p-1.5 rounded-md ${previewDevice === "desktop" ? "bg-white text-blue-600 shadow-xs" : "text-slate-500"}`}
+                      title="Desktop Width (650px)"
+                    >
+                      <Monitor className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      onClick={() => setPreviewDevice("mobile")}
+                      className={`p-1.5 rounded-md ${previewDevice === "mobile" ? "bg-white text-blue-600 shadow-xs" : "text-slate-500"}`}
+                      title="Mobile Width (375px)"
+                    >
+                      <Smartphone className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Zoom controls */}
+                  <div className="flex items-center gap-1.5">
+                    <button onClick={() => setZoomLevel(Math.max(70, zoomLevel - 10))} className="p-1 rounded bg-slate-100 hover:bg-slate-200">
+                      <ZoomOut className="h-3.5 w-3.5" />
+                    </button>
+                    <span className="font-mono text-slate-600 text-[11px]">{zoomLevel}%</span>
+                    <button onClick={() => setZoomLevel(Math.min(130, zoomLevel + 10))} className="p-1 rounded bg-slate-100 hover:bg-slate-200">
+                      <ZoomIn className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* RENDERED CANVAS */}
+              {/* RENDERED CANVAS CONTAINER */}
               <div className="flex justify-center overflow-x-auto p-4 bg-slate-200/60 rounded-2xl border border-slate-300 min-h-[800px]">
                 <div
                   style={{
                     transform: `scale(${zoomLevel / 100})`,
                     transformOrigin: "top center",
                     padding: `${marginPadding}px`,
+                    lineHeight: lineSpacing,
                   }}
-                  className="bg-white text-slate-900 shadow-2xl rounded-sm transition-all duration-300 text-xs w-[650px] min-h-[850px]"
+                  className={`bg-white text-slate-900 shadow-2xl rounded-sm transition-all duration-300 min-h-[850px] ${
+                    previewDevice === "mobile" ? "w-[375px]" : "w-[650px]"
+                  } ${
+                    fontFamily === "serif" ? "font-serif" : fontFamily === "mono" ? "font-mono" : "font-sans"
+                  }`}
                 >
-                  <div className="border-b-2 pb-3 mb-4" style={{ borderColor: accentColor }}>
-                    <h1 className="text-2xl font-bold uppercase tracking-tight text-slate-950">{personalInfo.fullName}</h1>
-                    <div className="text-sm font-semibold mt-0.5" style={{ color: accentColor }}>
-                      {personalInfo.jobTitle}
-                    </div>
-                    <div className="text-[11px] text-slate-600 mt-1 flex gap-2 font-medium">
-                      <span>{personalInfo.email}</span> • <span>{personalInfo.phone}</span> • <span>{personalInfo.location}</span>
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 mb-1.5">
-                      Professional Summary
-                    </h2>
-                    <p className="text-slate-700 leading-relaxed">{summary}</p>
-                  </div>
-
-                  <div className="mb-4">
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 mb-1.5">
-                      Skills & Core Competencies
-                    </h2>
-                    <div className="flex flex-wrap gap-1 pt-1">
-                      {skills.map((s, i) => (
-                        <span key={i} className="bg-slate-100 text-slate-800 font-semibold px-2 py-0.5 rounded text-[11px]">
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mb-4 space-y-3">
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 mb-1.5">
-                      Work Experience
-                    </h2>
-                    {experiences.map((exp) => (
-                      <div key={exp.id} className="space-y-1">
-                        <div className="flex justify-between items-baseline font-bold">
-                          <span className="text-slate-950 text-xs">{exp.position}</span>
-                          <span className="text-slate-500 text-[11px]">{exp.startDate} - {exp.endDate}</span>
+                  
+                  {/* CANVAS LAYOUT 1: MODERN */}
+                  {selectedTemplate === "modern" && (
+                    <div className="space-y-4">
+                      <div className="border-b-2 pb-3 mb-4" style={{ borderColor: accentColor }}>
+                        <h1 className="text-2xl font-bold uppercase tracking-tight text-slate-950">{personalInfo.fullName}</h1>
+                        <div className="text-sm font-semibold mt-0.5" style={{ color: accentColor }}>
+                          {personalInfo.jobTitle}
                         </div>
-                        <div className="font-semibold text-[11px]" style={{ color: accentColor }}>
-                          {exp.company}
+                        <div className="text-[11px] text-slate-600 mt-1 flex flex-wrap gap-2 font-medium">
+                          <span>{personalInfo.email}</span> • <span>{personalInfo.phone}</span> • <span>{personalInfo.location}</span>
+                          {personalInfo.linkedin && <span>• {personalInfo.linkedin}</span>}
                         </div>
-                        <ul className="list-disc list-inside space-y-1 text-slate-700 pt-0.5 leading-relaxed">
-                          {exp.bullets.map((b, bi) => (
-                            <li key={bi}>{b}</li>
+                      </div>
+
+                      <div className="mb-4">
+                        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 mb-1.5">
+                          Professional Summary
+                        </h2>
+                        <p className="text-slate-700 leading-relaxed text-[11px]">{summary}</p>
+                      </div>
+
+                      <div className="mb-4">
+                        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 mb-1.5">
+                          Skills & Competencies
+                        </h2>
+                        <div className="flex flex-wrap gap-1 pt-1">
+                          {skills.map((s, i) => (
+                            <span key={i} className="bg-slate-100 text-slate-800 font-semibold px-2 py-0.5 rounded text-[10px]">
+                              {s}
+                            </span>
                           ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div>
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 mb-1.5">
-                      Education
-                    </h2>
-                    {education.map((edu) => (
-                      <div key={edu.id} className="flex justify-between">
-                        <div>
-                          <div className="font-bold text-slate-950">{edu.degree}</div>
-                          <div className="text-slate-600">{edu.institution}</div>
                         </div>
-                        <div className="text-slate-500 text-[11px]">{edu.startDate} - {edu.endDate}</div>
                       </div>
-                    ))}
-                  </div>
+
+                      <div className="mb-4 space-y-3">
+                        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 mb-1.5">
+                          Work Experience
+                        </h2>
+                        {experiences.map((exp) => (
+                          <div key={exp.id} className="space-y-1">
+                            <div className="flex justify-between items-baseline font-bold">
+                              <span className="text-slate-950 text-xs">{exp.position}</span>
+                              <span className="text-slate-500 text-[10px]">{exp.startDate} - {exp.endDate}</span>
+                            </div>
+                            <div className="font-semibold text-[11px]" style={{ color: accentColor }}>
+                              {exp.company}
+                            </div>
+                            <ul className="list-disc list-inside space-y-1 text-slate-700 text-[11px] pt-0.5">
+                              {exp.bullets.map((b, bi) => (
+                                <li key={bi}>{b}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div>
+                        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 mb-1.5">
+                          Education
+                        </h2>
+                        {education.map((edu) => (
+                          <div key={edu.id} className="flex justify-between text-[11px]">
+                            <div>
+                              <div className="font-bold text-slate-950">{edu.degree}</div>
+                              <div className="text-slate-600">{edu.institution}</div>
+                            </div>
+                            <div className="text-slate-500">{edu.startDate} - {edu.endDate}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* CANVAS LAYOUT 2: EXECUTIVE (Serif, Header Banner) */}
+                  {selectedTemplate === "executive" && (
+                    <div className="space-y-4 font-serif">
+                      <div className="bg-slate-900 text-white p-5 -mx-6 -mt-6 mb-4">
+                        <h1 className="text-2xl font-bold tracking-wide uppercase">{personalInfo.fullName}</h1>
+                        <div className="text-amber-400 font-medium text-xs mt-1">{personalInfo.jobTitle}</div>
+                        <div className="text-[10px] text-slate-300 mt-2 flex flex-wrap gap-3">
+                          <span>{personalInfo.email}</span> • <span>{personalInfo.phone}</span> • <span>{personalInfo.location}</span>
+                        </div>
+                      </div>
+
+                      <div className="mb-4">
+                        <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 border-b-2 border-slate-900 pb-1 mb-2">
+                          Executive Profile
+                        </h2>
+                        <p className="text-slate-800 text-[11px] leading-relaxed italic">{summary}</p>
+                      </div>
+
+                      <div className="mb-4 space-y-3">
+                        <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 border-b-2 border-slate-900 pb-1 mb-2">
+                          Leadership & Experience
+                        </h2>
+                        {experiences.map((exp) => (
+                          <div key={exp.id} className="space-y-1">
+                            <div className="flex justify-between items-baseline font-bold text-xs">
+                              <span>{exp.position}</span>
+                              <span className="text-slate-500 text-[10px]">{exp.startDate} – {exp.endDate}</span>
+                            </div>
+                            <div className="font-bold text-slate-700 text-[11px]">{exp.company}</div>
+                            <ul className="list-disc list-inside space-y-1 text-slate-700 text-[11px]">
+                              {exp.bullets.map((b, bi) => (
+                                <li key={bi}>{b}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div>
+                        <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 border-b-2 border-slate-900 pb-1 mb-2">
+                          Education & Credentials
+                        </h2>
+                        {education.map((edu) => (
+                          <div key={edu.id} className="flex justify-between text-[11px]">
+                            <span className="font-bold text-slate-900">{edu.degree} — {edu.institution}</span>
+                            <span className="text-slate-500">{edu.startDate} – {edu.endDate}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* CANVAS LAYOUT 3: CREATIVE (2-Column Sidebar Layout) */}
+                  {selectedTemplate === "creative" && (
+                    <div className="grid grid-cols-12 gap-4 min-h-[750px] -m-6 p-6">
+                      {/* Left Sidebar */}
+                      <div className="col-span-4 bg-slate-900 text-white p-4 -my-6 -ml-6 space-y-5 rounded-l-sm text-[10px]">
+                        <div>
+                          <h1 className="text-lg font-extrabold uppercase leading-tight">{personalInfo.fullName}</h1>
+                          <div className="text-blue-400 font-semibold mt-1">{personalInfo.jobTitle}</div>
+                        </div>
+
+                        <div className="space-y-2 border-t border-slate-700 pt-3">
+                          <div className="font-bold text-slate-300 uppercase tracking-wider text-[9px]">Contact</div>
+                          <div className="text-slate-400 break-words">{personalInfo.email}</div>
+                          <div className="text-slate-400">{personalInfo.phone}</div>
+                          <div className="text-slate-400">{personalInfo.location}</div>
+                        </div>
+
+                        <div className="space-y-2 border-t border-slate-700 pt-3">
+                          <div className="font-bold text-slate-300 uppercase tracking-wider text-[9px]">Core Skills</div>
+                          <div className="flex flex-wrap gap-1">
+                            {skills.map((s, i) => (
+                              <span key={i} className="bg-slate-800 text-blue-300 px-2 py-0.5 rounded text-[9px]">
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right Main Column */}
+                      <div className="col-span-8 space-y-4 pl-2 text-[11px]">
+                        <div>
+                          <h2 className="font-bold text-xs uppercase tracking-wider text-blue-600 border-b border-blue-200 pb-1 mb-1.5">
+                            About Me
+                          </h2>
+                          <p className="text-slate-700 leading-relaxed">{summary}</p>
+                        </div>
+
+                        <div className="space-y-3">
+                          <h2 className="font-bold text-xs uppercase tracking-wider text-blue-600 border-b border-blue-200 pb-1 mb-1.5">
+                            Experience
+                          </h2>
+                          {experiences.map((exp) => (
+                            <div key={exp.id} className="space-y-1">
+                              <div className="flex justify-between font-bold">
+                                <span>{exp.position}</span>
+                                <span className="text-slate-400 text-[10px]">{exp.startDate} - {exp.endDate}</span>
+                              </div>
+                              <div className="text-blue-600 font-semibold">{exp.company}</div>
+                              <ul className="list-disc list-inside space-y-1 text-slate-600">
+                                {exp.bullets.map((b, bi) => (
+                                  <li key={bi}>{b}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div>
+                          <h2 className="font-bold text-xs uppercase tracking-wider text-blue-600 border-b border-blue-200 pb-1 mb-1.5">
+                            Education
+                          </h2>
+                          {education.map((edu) => (
+                            <div key={edu.id}>
+                              <div className="font-bold text-slate-900">{edu.degree}</div>
+                              <div className="text-slate-500">{edu.institution} ({edu.startDate} - {edu.endDate})</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* CANVAS LAYOUT 4: ATS GOLD STANDARD (Single column, plain text stream) */}
+                  {selectedTemplate === "ats" && (
+                    <div className="space-y-4 font-mono text-[10.5px] leading-snug">
+                      <div className="text-center border-b border-slate-400 pb-2 mb-3">
+                        <h1 className="text-xl font-bold uppercase tracking-widest text-slate-950">{personalInfo.fullName}</h1>
+                        <div className="text-slate-800 font-bold">{personalInfo.jobTitle}</div>
+                        <div className="text-slate-600 text-[9.5px] mt-1">
+                          {personalInfo.email} | {personalInfo.phone} | {personalInfo.location}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="font-bold uppercase tracking-wider border-b border-slate-300 mb-1">SECTION: PROFESSIONAL SUMMARY</div>
+                        <p className="text-slate-800">{summary}</p>
+                      </div>
+
+                      <div>
+                        <div className="font-bold uppercase tracking-wider border-b border-slate-300 mb-1">SECTION: CORE SKILLS</div>
+                        <p className="text-slate-800">{skills.join(" • ")}</p>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="font-bold uppercase tracking-wider border-b border-slate-300 mb-1">SECTION: WORK EXPERIENCE</div>
+                        {experiences.map((exp) => (
+                          <div key={exp.id} className="space-y-1">
+                            <div className="font-bold flex justify-between">
+                              <span>JOB TITLE: {exp.position}</span>
+                              <span>DATES: {exp.startDate} - {exp.endDate}</span>
+                            </div>
+                            <div className="font-semibold text-slate-800">EMPLOYER: {exp.company}</div>
+                            {exp.bullets.map((b, bi) => (
+                              <div key={bi} className="text-slate-700 pl-2">• {b}</div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+
+                      <div>
+                        <div className="font-bold uppercase tracking-wider border-b border-slate-300 mb-1">SECTION: EDUCATION</div>
+                        {education.map((edu) => (
+                          <div key={edu.id}>
+                            <div className="font-bold">{edu.degree}</div>
+                            <div className="text-slate-600">{edu.institution} ({edu.startDate} - {edu.endDate})</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                 </div>
               </div>
 
@@ -936,6 +1357,37 @@ export default function ResumeCraftBuilder() {
               🎉 PDF Export Initiated Successfully! 100% Free Guarantee.
             </div>
           )}
+        </div>
+      )}
+
+      {/* UPLOAD MODAL */}
+      {uploadModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
+                <Upload className="h-5 w-5 text-blue-600" /> Upload Existing Resume
+              </h3>
+              <button onClick={() => setUploadModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center space-y-3 bg-slate-50 hover:bg-slate-100/50 cursor-pointer">
+              <div className="h-12 w-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto">
+                <FileText className="h-6 w-6" />
+              </div>
+              <div className="font-bold text-slate-900 text-sm">Drag & drop your PDF or DOCX file</div>
+              <div className="text-xs text-slate-500">Supports PDF, DOCX up to 10MB</div>
+            </div>
+
+            <button
+              onClick={handlePreFillDemoData}
+              className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md"
+            >
+              ✨ Pre-fill Demo Candidate Profile
+            </button>
+          </div>
         </div>
       )}
 
