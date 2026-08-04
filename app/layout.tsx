@@ -1,122 +1,98 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import Navigation from "@/components/Navigation";
 import Link from "next/link";
-import { FileText, ChevronDown } from "lucide-react";
+import { FileText } from "lucide-react";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ResumeReady.org — Free ATS Resume Builder",
-  description: "Create professional ATS-friendly resumes in minutes with recruiter-tested templates and AI assistance.",
+  description: "Build job-worthy resumes fast. Free, ATS-tested, recruiter-approved.",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en" className="light">
-      <body className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 antialiased selection:bg-blue-500 selection:text-white">
+      <body className={`${inter.className} min-h-screen flex flex-col antialiased bg-slate-50 text-slate-900`}>
+        <Navigation />
         
-        {/* RESUME.IO STYLE CLEAN HEADER */}
-        <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
-          <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-8">
-            
-            {/* Left: Brand Logo */}
-            <Link href="/" className="flex items-center gap-2.5 font-extrabold text-xl text-slate-900 tracking-tight">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-500/20">
-                <FileText className="h-5 w-5" />
+        <main className="flex-1">
+          {children}
+        </main>
+
+        {/* Multi-Column Footer */}
+        <footer className="bg-white border-t border-slate-200 py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+              
+              {/* Column 1 (Brand) */}
+              <div className="space-y-4">
+                <Link href="/" className="flex items-center gap-2 group">
+                  <div className="bg-blue-600 p-1.5 rounded-xl text-white group-hover:bg-blue-700 transition-colors">
+                    <FileText className="w-5 h-5" />
+                  </div>
+                  <span className="font-bold text-xl text-slate-900 tracking-tight">
+                    resume<span className="text-blue-600">.org</span>
+                  </span>
+                </Link>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  Build job-worthy resumes fast. Free, ATS-tested, recruiter-approved.
+                </p>
               </div>
-              <span className="flex items-baseline font-bold text-slate-900">
-                resume<span className="text-blue-600 font-extrabold">.org</span>
-              </span>
-            </Link>
 
-            {/* Center: Navigation Links */}
-            <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-              <Link href="/templates" className="hover:text-slate-900">
-                Resume Templates
-              </Link>
-
-              <Link href="/examples" className="hover:text-slate-900">
-                Resume Examples
-              </Link>
-
-              <Link href="/cover-letter" className="hover:text-slate-900">
-                Cover Letter
-              </Link>
-
-              <Link href="/ats-checker" className="hover:text-slate-900">
-                FAQ
-              </Link>
-
-              <Link href="/resources" className="hover:text-slate-900">
-                Resources
-              </Link>
-            </nav>
-
-            {/* Right: Auth Action Buttons */}
-            <div className="flex items-center gap-4">
-              <Link href="/login" className="text-sm font-semibold text-blue-600 hover:text-blue-700 px-3 py-2">
-                Sign in
-              </Link>
-
-              <Link
-                href="/builder"
-                className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-500/20 hover:bg-blue-500 active:scale-95 transition-all"
-              >
-                Create my resume
-              </Link>
-            </div>
-
-          </div>
-        </header>
-
-        {/* Main Body */}
-        <main className="flex-1">{children}</main>
-
-        {/* Clean Footer */}
-        <footer className="border-t border-slate-200 bg-white py-12 text-slate-600 text-sm">
-          <div className="container mx-auto px-4 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 font-bold text-lg text-slate-900">
-                <FileText className="h-5 w-5 text-blue-600" />
-                ResumeReady.org
+              {/* Column 2 (Resume Tools) */}
+              <div>
+                <h4 className="font-bold text-slate-900 mb-6">Resume Tools</h4>
+                <ul className="space-y-4">
+                  <li><Link href="/builder" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">Resume Builder</Link></li>
+                  <li><Link href="/ats-checker" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">ATS Scanner</Link></li>
+                  <li><Link href="/tailor" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">Job Matcher</Link></li>
+                  <li><Link href="/builder" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">AI Resume Coach</Link></li>
+                </ul>
               </div>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Connect with recruiters using 100% ATS-friendly resume templates. Fast, free, and recruiter-tested.
+
+              {/* Column 3 (Templates) */}
+              <div>
+                <h4 className="font-bold text-slate-900 mb-6">Templates</h4>
+                <ul className="space-y-4">
+                  <li><Link href="/builder?template=modern" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">Modern</Link></li>
+                  <li><Link href="/builder?template=executive" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">Executive</Link></li>
+                  <li><Link href="/builder?template=creative" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">Creative</Link></li>
+                  <li><Link href="/builder?template=ats" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">ATS</Link></li>
+                  <li><Link href="/templates" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">All Templates</Link></li>
+                </ul>
+              </div>
+
+              {/* Column 4 (Company) */}
+              <div>
+                <h4 className="font-bold text-slate-900 mb-6">Company</h4>
+                <ul className="space-y-4">
+                  <li><Link href="/resources" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">Blog & Resources</Link></li>
+                  <li><Link href="/resources" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">Career Advice</Link></li>
+                  <li><Link href="/examples" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">Resume Examples</Link></li>
+                  <li><Link href="/#faq" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">FAQ</Link></li>
+                  <li><Link href="#" className="text-slate-500 hover:text-blue-600 text-sm transition-colors">Contact</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-slate-400 text-sm">
+                © 2024 ResumeReady.org. All rights reserved.
               </p>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-slate-900 mb-3 text-sm">Resume Tools</h4>
-              <ul className="space-y-2 text-xs">
-                <li><Link href="/builder" className="hover:text-slate-900">Resume Builder</Link></li>
-                <li><Link href="/ats-checker" className="hover:text-slate-900">ATS Resume Checker</Link></li>
-                <li><Link href="/tailor" className="hover:text-slate-900">Job Description Matcher</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-slate-900 mb-3 text-sm">Templates</h4>
-              <ul className="space-y-2 text-xs">
-                <li><Link href="/templates" className="hover:text-slate-900">Modern Templates</Link></li>
-                <li><Link href="/templates" className="hover:text-slate-900">Executive Templates</Link></li>
-                <li><Link href="/templates" className="hover:text-slate-900">Creative Templates</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-slate-900 mb-3 text-sm">Legal & Privacy</h4>
-              <p className="text-xs text-slate-500 mb-2">
-                Your data is secure and never sold to third parties.
-              </p>
-              <div className="text-xs text-slate-400">
-                © {new Date().getFullYear()} ResumeReady.org. All rights reserved.
+              <div className="flex gap-6">
+                <Link href="#" className="text-slate-400 hover:text-slate-600 text-sm transition-colors">Privacy Policy</Link>
+                <Link href="#" className="text-slate-400 hover:text-slate-600 text-sm transition-colors">Terms of Service</Link>
               </div>
             </div>
           </div>
         </footer>
-
       </body>
     </html>
   );
