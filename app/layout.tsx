@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
-import { FileText, ChevronDown, Sparkles } from "lucide-react";
+import { FileText, ChevronDown } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "ResumeReady.org — Free ATS Resume Builder",
@@ -31,31 +31,27 @@ export default function RootLayout({
               </span>
             </Link>
 
-            {/* Center: Navigation Links with Dropdown Chevrons */}
+            {/* Center: Navigation Links */}
             <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-              <div className="group relative flex items-center gap-1 cursor-pointer hover:text-slate-900 py-2">
-                <span>Resume Templates</span>
-                <ChevronDown className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-700" />
-              </div>
+              <Link href="/templates" className="hover:text-slate-900">
+                Resume Templates
+              </Link>
 
-              <div className="group relative flex items-center gap-1 cursor-pointer hover:text-slate-900 py-2">
-                <span>Resume Examples</span>
-                <ChevronDown className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-700" />
-              </div>
+              <Link href="/examples" className="hover:text-slate-900">
+                Resume Examples
+              </Link>
 
-              <div className="group relative flex items-center gap-1 cursor-pointer hover:text-slate-900 py-2">
-                <span>Cover Letter</span>
-                <ChevronDown className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-700" />
-              </div>
+              <Link href="/cover-letter" className="hover:text-slate-900">
+                Cover Letter
+              </Link>
 
               <Link href="/ats-checker" className="hover:text-slate-900">
                 FAQ
               </Link>
 
-              <div className="group relative flex items-center gap-1 cursor-pointer hover:text-slate-900 py-2">
-                <span>Resources</span>
-                <ChevronDown className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-700" />
-              </div>
+              <Link href="/resources" className="hover:text-slate-900">
+                Resources
+              </Link>
             </nav>
 
             {/* Right: Auth Action Buttons */}
@@ -103,9 +99,9 @@ export default function RootLayout({
             <div>
               <h4 className="font-bold text-slate-900 mb-3 text-sm">Templates</h4>
               <ul className="space-y-2 text-xs">
-                <li><Link href="/builder" className="hover:text-slate-900">Modern Templates</Link></li>
-                <li><Link href="/builder" className="hover:text-slate-900">Executive Templates</Link></li>
-                <li><Link href="/builder" className="hover:text-slate-900">Creative Templates</Link></li>
+                <li><Link href="/templates" className="hover:text-slate-900">Modern Templates</Link></li>
+                <li><Link href="/templates" className="hover:text-slate-900">Executive Templates</Link></li>
+                <li><Link href="/templates" className="hover:text-slate-900">Creative Templates</Link></li>
               </ul>
             </div>
 
