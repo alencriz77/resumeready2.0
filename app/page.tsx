@@ -16,6 +16,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { NumberTicker } from "@/components/magicui/NumberTicker";
+import { PricingMatrix } from "@/components/pricing/PricingMatrix";
 
 export default function Home() {
   // --- Section 1: Hero Typing Animation State ---
@@ -456,115 +457,232 @@ export default function Home() {
         {/* ================= SECTION 5: TEMPLATE SHOWCASE ================= */}
         <section className="space-y-10">
           <div className="text-center space-y-4 max-w-2xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">Recruiter-Tested Templates for Every Profession</h2>
-            <p className="text-slate-600 text-lg">
-              Designed to pass ATS screening algorithms and impress hiring managers.
+            <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-700 border border-orange-200 rounded-full px-4 py-1.5 text-sm font-medium">
+              <span>🔥</span> Trending templates for 2025
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">
+              Templates Matched to Today&apos;s Hottest Roles
+            </h2>
+            <p className="text-slate-500 text-lg">
+              Data-driven designs based on the jobs getting the most traction right now.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Template 1 */}
-            <Link href="/builder?template=modern" className="group block">
-              <div className="bg-white rounded-2xl border border-slate-200 hover:shadow-xl transition-all duration-300 aspect-[3/4] p-4 sm:p-6 flex flex-col relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-3 bg-blue-600"></div>
-                <div className="mt-4 mb-6 border-b pb-4">
-                  <div className="w-1/2 h-4 bg-slate-800 rounded mb-2"></div>
-                  <div className="w-1/3 h-2 bg-blue-600 rounded"></div>
-                </div>
-                <div className="flex gap-4 flex-1">
-                  <div className="w-2/3 space-y-4 border-r pr-4">
-                    <div className="w-1/4 h-2 bg-slate-300 rounded"></div>
-                    <div className="space-y-2">
-                       <div className="w-full h-1.5 bg-slate-200 rounded"></div>
-                       <div className="w-5/6 h-1.5 bg-slate-200 rounded"></div>
-                       <div className="w-full h-1.5 bg-slate-200 rounded"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Trending Template 1: Stockholm - AI & Tech */}
+            <Link href="/builder?template=stockholm" className="group block">
+              <div className="bg-white rounded-2xl border border-slate-200 hover:shadow-xl hover:border-blue-200 transition-all duration-300 overflow-hidden flex flex-col">
+                {/* Mini Resume Mockup */}
+                <div className="aspect-[3/4] bg-slate-50 p-4 relative">
+                  {/* Badge */}
+                  <div className="absolute top-3 right-3 z-10 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                    🔥 +38.5% YoY
+                  </div>
+                  {/* ATS Score */}
+                  <div className="absolute top-3 left-3 z-10 bg-white/90 backdrop-blur-sm border border-slate-100 rounded-md px-2 py-1 shadow-sm">
+                    <span className="text-emerald-600 font-bold text-xs">98</span>
+                    <span className="text-slate-400 text-[10px]">/100</span>
+                  </div>
+                  {/* Modern Sidebar Mockup */}
+                  <div className="w-full h-full bg-white rounded-lg border border-slate-100 shadow-sm flex overflow-hidden">
+                    <div className="w-[35%] bg-blue-600 p-2 flex flex-col gap-1">
+                      <div className="w-6 h-6 rounded-full bg-white/30 mx-auto mb-1"></div>
+                      <div className="text-[5px] text-white font-bold text-center">Alice Hart</div>
+                      <div className="text-[4px] text-blue-200 text-center">AI/ML Engineer</div>
+                      <div className="mt-2 space-y-1">
+                        <div className="text-[4px] text-white/70 font-bold">SKILLS</div>
+                        <div className="flex flex-wrap gap-0.5">
+                          <span className="bg-white/20 text-white text-[3px] px-1 rounded">PyTorch</span>
+                          <span className="bg-white/20 text-white text-[3px] px-1 rounded">LLMs</span>
+                          <span className="bg-white/20 text-white text-[3px] px-1 rounded">Python</span>
+                          <span className="bg-white/20 text-white text-[3px] px-1 rounded">MLOps</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-[65%] p-2 space-y-1.5">
+                      <div className="text-[4px] text-slate-800 font-bold">EXPERIENCE</div>
+                      <div className="text-[4px] text-slate-600 font-medium">Senior ML Engineer</div>
+                      <div className="text-[3px] text-slate-400">DeepMind · 2022–Present</div>
+                      <div className="text-[3px] text-slate-500">• Built RAG pipeline reducing latency 40%</div>
+                      <div className="text-[3px] text-slate-500">• Deployed LLM serving 10M+ daily</div>
                     </div>
                   </div>
-                  <div className="w-1/3 space-y-4">
-                     <div className="w-1/2 h-2 bg-slate-300 rounded"></div>
-                     <div className="space-y-2">
-                       <div className="w-full h-1.5 bg-slate-200 rounded"></div>
-                       <div className="w-3/4 h-1.5 bg-slate-200 rounded"></div>
-                     </div>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                    <span className="bg-white text-slate-900 font-bold text-sm px-5 py-2.5 rounded-full shadow-xl transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                      Use Stockholm
+                    </span>
                   </div>
                 </div>
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-slate-900/5 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="bg-white text-slate-900 font-bold px-6 py-3 rounded-full shadow-xl shadow-black/10 transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                    Use Modern Minimalist
-                  </span>
+                {/* Card Info */}
+                <div className="p-4 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-slate-900">Stockholm</h3>
+                    <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">Tech & AI</span>
+                  </div>
+                  <p className="text-xs text-slate-500">$140K–$206K avg salary range</p>
                 </div>
               </div>
             </Link>
 
-            {/* Template 2 */}
-            <Link href="/builder?template=executive" className="group block">
-              <div className="bg-slate-900 rounded-2xl border border-slate-200 hover:shadow-xl transition-all duration-300 aspect-[3/4] p-4 sm:p-6 flex flex-col relative overflow-hidden">
-                <div className="mb-6 border-b border-slate-700 pb-4 text-center">
-                  <div className="w-1/2 h-4 bg-white rounded mb-2 mx-auto"></div>
-                  <div className="w-1/3 h-2 bg-slate-400 rounded mx-auto"></div>
-                </div>
-                <div className="bg-white flex-1 -mx-6 -mb-6 p-6 space-y-6">
-                    <div className="space-y-2">
-                       <div className="w-1/4 h-2 bg-slate-800 rounded"></div>
-                       <div className="w-full h-1.5 bg-slate-200 rounded"></div>
-                       <div className="w-5/6 h-1.5 bg-slate-200 rounded"></div>
+            {/* Trending Template 2: Berlin - DevOps/Cloud */}
+            <Link href="/builder?template=berlin" className="group block">
+              <div className="bg-white rounded-2xl border border-slate-200 hover:shadow-xl hover:border-emerald-200 transition-all duration-300 overflow-hidden flex flex-col">
+                <div className="aspect-[3/4] bg-slate-50 p-4 relative">
+                  <div className="absolute top-3 right-3 z-10 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                    🔥 +28.5% YoY
+                  </div>
+                  <div className="absolute top-3 left-3 z-10 bg-white/90 backdrop-blur-sm border border-slate-100 rounded-md px-2 py-1 shadow-sm">
+                    <span className="text-emerald-600 font-bold text-xs">98</span>
+                    <span className="text-slate-400 text-[10px]">/100</span>
+                  </div>
+                  {/* Tech Terminal Mockup */}
+                  <div className="w-full h-full bg-slate-900 rounded-lg border border-slate-700 shadow-sm p-2.5 overflow-hidden">
+                    <div className="flex gap-1 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-red-400"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-yellow-400"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div>
                     </div>
-                    <div className="space-y-2">
-                       <div className="w-1/4 h-2 bg-slate-800 rounded"></div>
-                       <div className="w-full h-1.5 bg-slate-200 rounded"></div>
-                       <div className="w-4/6 h-1.5 bg-slate-200 rounded"></div>
+                    <div className="text-[5px] text-emerald-400 font-mono font-bold">Alice Hart</div>
+                    <div className="text-[4px] text-emerald-300/60 font-mono">Cloud Architect & SRE</div>
+                    <div className="mt-1.5 text-[4px] text-slate-500 font-mono">$ cat experience.yml</div>
+                    <div className="text-[3.5px] text-emerald-300/80 font-mono mt-0.5">  role: Lead DevOps Engineer</div>
+                    <div className="text-[3.5px] text-emerald-300/80 font-mono">  company: AWS · 2021-Present</div>
+                    <div className="text-[3.5px] text-slate-400 font-mono">  &gt; Managed 200+ K8s clusters</div>
+                    <div className="text-[3.5px] text-slate-400 font-mono">  &gt; Reduced deploy time by 65%</div>
+                    <div className="mt-1.5 text-[4px] text-slate-500 font-mono">$ echo $STACK</div>
+                    <div className="flex flex-wrap gap-0.5 mt-0.5">
+                      <span className="bg-emerald-500/20 text-emerald-400 text-[3px] px-1 rounded font-mono">Terraform</span>
+                      <span className="bg-emerald-500/20 text-emerald-400 text-[3px] px-1 rounded font-mono">K8s</span>
+                      <span className="bg-emerald-500/20 text-emerald-400 text-[3px] px-1 rounded font-mono">AWS</span>
+                      <span className="bg-emerald-500/20 text-emerald-400 text-[3px] px-1 rounded font-mono">Docker</span>
                     </div>
+                  </div>
+                  <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                    <span className="bg-white text-slate-900 font-bold text-sm px-5 py-2.5 rounded-full shadow-xl transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                      Use Berlin
+                    </span>
+                  </div>
                 </div>
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-slate-900/20 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="bg-white text-slate-900 font-bold px-6 py-3 rounded-full shadow-xl shadow-black/10 transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                    Use Executive Serif
-                  </span>
+                <div className="p-4 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-slate-900">Berlin</h3>
+                    <span className="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">DevOps & Cloud</span>
+                  </div>
+                  <p className="text-xs text-slate-500">$118K–$152K avg salary range</p>
                 </div>
               </div>
             </Link>
 
-            {/* Template 3 */}
-            <Link href="/builder?template=ats" className="group block">
-              <div className="bg-white rounded-2xl border border-slate-200 hover:shadow-xl transition-all duration-300 aspect-[3/4] p-6 sm:p-8 flex flex-col relative overflow-hidden">
-                <div className="text-center mb-6">
-                  <div className="w-1/2 h-3 bg-slate-800 rounded mb-3 mx-auto"></div>
-                  <div className="w-2/3 h-1.5 bg-slate-400 rounded mx-auto"></div>
-                </div>
-                <div className="space-y-6 flex-1">
-                    <div className="space-y-2">
-                       <div className="w-full h-px bg-slate-800 mb-2"></div>
-                       <div className="w-1/5 h-2 bg-slate-800 rounded"></div>
-                       <div className="w-full h-1 bg-slate-200 rounded"></div>
-                       <div className="w-full h-1 bg-slate-200 rounded"></div>
-                       <div className="w-3/4 h-1 bg-slate-200 rounded"></div>
+            {/* Trending Template 3: Toronto - Healthcare */}
+            <Link href="/builder?template=toronto" className="group block">
+              <div className="bg-white rounded-2xl border border-slate-200 hover:shadow-xl hover:border-sky-200 transition-all duration-300 overflow-hidden flex flex-col">
+                <div className="aspect-[3/4] bg-slate-50 p-4 relative">
+                  <div className="absolute top-3 right-3 z-10 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                    🔥 +40.1% YoY
+                  </div>
+                  <div className="absolute top-3 left-3 z-10 bg-white/90 backdrop-blur-sm border border-slate-100 rounded-md px-2 py-1 shadow-sm">
+                    <span className="text-emerald-600 font-bold text-xs">97</span>
+                    <span className="text-slate-400 text-[10px]">/100</span>
+                  </div>
+                  {/* Clinical Clean Mockup */}
+                  <div className="w-full h-full bg-white rounded-lg border border-slate-100 shadow-sm flex flex-col overflow-hidden">
+                    <div className="h-2 bg-sky-500 w-full"></div>
+                    <div className="p-2 text-center border-b border-slate-100">
+                      <div className="text-[5px] font-bold text-slate-800">Alice Hart, BSN, RN</div>
+                      <div className="text-[4px] text-sky-600">Registered Nurse · ICU Specialist</div>
+                      <div className="flex justify-center gap-1 mt-0.5">
+                        <span className="bg-sky-50 text-sky-700 text-[3px] px-1 rounded">BLS</span>
+                        <span className="bg-sky-50 text-sky-700 text-[3px] px-1 rounded">ACLS</span>
+                        <span className="bg-sky-50 text-sky-700 text-[3px] px-1 rounded">PALS</span>
+                      </div>
                     </div>
-                    <div className="space-y-2">
-                       <div className="w-full h-px bg-slate-800 mb-2"></div>
-                       <div className="w-1/5 h-2 bg-slate-800 rounded"></div>
-                       <div className="w-full h-1 bg-slate-200 rounded"></div>
-                       <div className="w-11/12 h-1 bg-slate-200 rounded"></div>
+                    <div className="p-2 space-y-1.5 flex-1">
+                      <div className="bg-sky-50/60 rounded px-1 py-0.5">
+                        <div className="text-[4px] text-sky-800 font-bold">CLINICAL EXPERIENCE</div>
+                      </div>
+                      <div className="text-[4px] text-slate-600 font-medium">ICU Nurse</div>
+                      <div className="text-[3px] text-slate-400">Mount Sinai Hospital · 2020–Present</div>
+                      <div className="text-[3px] text-slate-500">• Managed 12-bed ICU critical care unit</div>
+                      <div className="text-[3px] text-slate-500">• Reduced patient readmission by 18%</div>
                     </div>
+                  </div>
+                  <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                    <span className="bg-white text-slate-900 font-bold text-sm px-5 py-2.5 rounded-full shadow-xl transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                      Use Toronto
+                    </span>
+                  </div>
                 </div>
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-slate-900/5 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="bg-white text-slate-900 font-bold px-6 py-3 rounded-full shadow-xl shadow-black/10 transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                    Use ATS Standard
-                  </span>
+                <div className="p-4 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-slate-900">Toronto</h3>
+                    <span className="text-[10px] bg-sky-50 text-sky-600 px-2 py-0.5 rounded-full">Healthcare</span>
+                  </div>
+                  <p className="text-xs text-slate-500">$80K–$145K avg salary range</p>
+                </div>
+              </div>
+            </Link>
+
+            {/* Trending Template 4: Vienna - Career Changer */}
+            <Link href="/builder?template=vienna" className="group block">
+              <div className="bg-white rounded-2xl border border-slate-200 hover:shadow-xl hover:border-teal-200 transition-all duration-300 overflow-hidden flex flex-col">
+                <div className="aspect-[3/4] bg-slate-50 p-4 relative">
+                  <div className="absolute top-3 right-3 z-10 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                    🔥 +25% YoY
+                  </div>
+                  <div className="absolute top-3 left-3 z-10 bg-white/90 backdrop-blur-sm border border-slate-100 rounded-md px-2 py-1 shadow-sm">
+                    <span className="text-emerald-600 font-bold text-xs">98</span>
+                    <span className="text-slate-400 text-[10px]">/100</span>
+                  </div>
+                  {/* Hybrid Transition Mockup */}
+                  <div className="w-full h-full bg-white rounded-lg border border-slate-100 shadow-sm flex flex-col overflow-hidden">
+                    <div className="p-2 border-b border-teal-100">
+                      <div className="text-[5px] font-bold text-slate-800">Alice Hart</div>
+                      <div className="text-[4px] text-teal-600">Marketing → Product Management</div>
+                    </div>
+                    <div className="p-2 space-y-1.5 flex-1">
+                      <div className="text-[4px] text-teal-700 font-bold">CORE COMPETENCIES</div>
+                      <div className="grid grid-cols-2 gap-0.5">
+                        <div className="bg-teal-50 text-[3px] text-teal-700 px-1 py-0.5 rounded text-center">Strategy</div>
+                        <div className="bg-teal-50 text-[3px] text-teal-700 px-1 py-0.5 rounded text-center">Analytics</div>
+                        <div className="bg-teal-50 text-[3px] text-teal-700 px-1 py-0.5 rounded text-center">Leadership</div>
+                        <div className="bg-teal-50 text-[3px] text-teal-700 px-1 py-0.5 rounded text-center">Agile</div>
+                      </div>
+                      <div className="text-[4px] text-slate-700 font-bold mt-1">EXPERIENCE</div>
+                      <div className="text-[4px] text-slate-600 font-medium">Marketing Director</div>
+                      <div className="text-[3px] text-slate-400">Shopify · 2019–2024</div>
+                      <div className="text-[3px] text-slate-500">• Led cross-functional team of 12</div>
+                      <div className="text-[3px] text-slate-500">• Drove $8M pipeline growth via PLG</div>
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                    <span className="bg-white text-slate-900 font-bold text-sm px-5 py-2.5 rounded-full shadow-xl transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                      Use Vienna
+                    </span>
+                  </div>
+                </div>
+                <div className="p-4 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-slate-900">Vienna</h3>
+                    <span className="text-[10px] bg-teal-50 text-teal-600 px-2 py-0.5 rounded-full">Career Change</span>
+                  </div>
+                  <p className="text-xs text-slate-500">Skills-based hiring trend +25%</p>
                 </div>
               </div>
             </Link>
           </div>
 
           <div className="text-center mt-8">
-            <Link href="/templates" className="inline-flex items-center gap-2 text-slate-600 font-bold hover:text-blue-600 transition-colors">
-              View all templates <ArrowRight className="w-4 h-4" />
+            <Link href="/templates" className="inline-flex items-center gap-2 bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-slate-800 transition-colors shadow-lg">
+              View all 12 templates <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </section>
 
-        {/* ================= SECTION 6: FAQ ACCORDION ================= */}
+        {/* ================= SECTION 6: PRICING ================= */}
+        <PricingMatrix />
+
+        {/* ================= SECTION 7: FAQ ACCORDION ================= */}
         <section id="faq" className="max-w-3xl mx-auto space-y-8 scroll-mt-24">
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 text-center mb-10">Frequently Asked Questions</h2>
           
@@ -593,7 +711,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ================= SECTION 7: BOTTOM CTA ================= */}
+        {/* ================= SECTION 8: BOTTOM CTA ================= */}
         <section className="rounded-[2.5rem] bg-blue-600 p-12 sm:p-16 text-center text-white relative overflow-hidden shadow-xl shadow-blue-600/20">
           {/* Decorative Background Elements */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
